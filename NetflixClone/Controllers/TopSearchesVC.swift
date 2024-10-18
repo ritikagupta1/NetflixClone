@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TopSearchesViewController.swift
 //  NetflixClone
 //
 //  Created by Ritika Gupta on 18/10/24.
@@ -7,13 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class TopSearchesVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.view.backgroundColor = .systemBackground
     }
-
-
 }
-
