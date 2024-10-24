@@ -21,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B4F21D5C2CCAC83200BC60D0 /* Configurations.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Configurations.xcconfig; sourceTree = "<group>"; };
 		B4FFEA8C2CC231A300EE22F5 /* NetflixClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetflixClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4FFEA8F2CC231A300EE22F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4FFEA912CC231A300EE22F5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +51,7 @@
 		B4FFEA832CC231A300EE22F5 = {
 			isa = PBXGroup;
 			children = (
+				B4F21D5C2CCAC83200BC60D0 /* Configurations.xcconfig */,
 				B4FFEA8E2CC231A300EE22F5 /* NetflixClone */,
 				B4FFEA8D2CC231A300EE22F5 /* Products */,
 			);
