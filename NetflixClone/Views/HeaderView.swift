@@ -24,7 +24,7 @@ class HeaderView: UIView {
         button.setTitleColor(.label, for: .normal)
         button.layer.borderColor = UIColor.label.cgColor
         button.layer.borderWidth = 2
-        
+        button.layer.cornerRadius = 6
         return button
     }()
     
@@ -35,7 +35,7 @@ class HeaderView: UIView {
         button.setTitleColor(.label, for: .normal)
         button.layer.borderColor = UIColor.label.cgColor
         button.layer.borderWidth = 2
-        
+        button.layer.cornerRadius = 6
         return button
     }()
     
