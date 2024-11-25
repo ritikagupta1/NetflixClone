@@ -30,39 +30,41 @@ extension EndPoint {
         Bundle.main.infoDictionary?["API_KEY"] as? String
     }
     
-    static func trendingMovies() -> EndPoint {
+    static func trendingMovies(page: Int) -> EndPoint {
         return EndPoint(
             path: "/3/trending/movie/day",
-            queryItems: [URLQueryItem(name: "api_key" , value: apiKey)])
+            queryItems: [URLQueryItem(name: "api_key" , value: apiKey),
+                         URLQueryItem(name: "page" , value: "\(page)")])
     }
     
-    static func trendingTV() -> EndPoint {
+    static func trendingTV(page: Int) -> EndPoint {
         return EndPoint(
             path: "/3/trending/tv/day",
-            queryItems: [URLQueryItem(name: "api_key" , value: apiKey)])
+            queryItems: [URLQueryItem(name: "api_key" , value: apiKey),
+                         URLQueryItem(name: "page" , value: "\(page)")])
     }
     
-    static func upcomingMovies() -> EndPoint {
+    static func upcomingMovies(page: Int) -> EndPoint {
         return EndPoint(
             path: "/3/movie/upcoming",
             queryItems: [URLQueryItem(name: "api_key" , value: apiKey),
                          URLQueryItem(name: "language", value: "en-US"),
-                          URLQueryItem(name: "page", value: "1")])
+                         URLQueryItem(name: "page" , value: "\(page)")])
     }
     
-    static func popularMovies() -> EndPoint {
+    static func popularMovies(page: Int) -> EndPoint {
         return EndPoint(
             path: "/3/movie/popular",
             queryItems: [URLQueryItem(name: "api_key" , value: apiKey),
                          URLQueryItem(name: "language", value: "en-US"),
-                          URLQueryItem(name: "page", value: "1")])
+                         URLQueryItem(name: "page" , value: "\(page)")])
     }
     
-    static func topRated() -> EndPoint {
+    static func topRated(page: Int) -> EndPoint {
         return EndPoint(
             path: "/3/movie/top_rated",
             queryItems: [URLQueryItem(name: "api_key" , value: apiKey),
                          URLQueryItem(name: "language", value: "en-US"),
-                          URLQueryItem(name: "page", value: "1")])
+                         URLQueryItem(name: "page" , value: "\(page)")])
     }
 }

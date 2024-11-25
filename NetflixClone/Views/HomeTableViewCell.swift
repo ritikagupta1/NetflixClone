@@ -12,7 +12,10 @@ class HomeTableViewCell: UITableViewCell {
     
     var content: [Content] = []
     
-    private let collectionView: UICollectionView = {
+    private var retryHandler: (() -> Void)?
+    var fetchNext: (() -> Void)?
+    
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         
@@ -20,6 +23,14 @@ class HomeTableViewCell: UITableViewCell {
         collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
         return collectionView
     }()
+    
+    let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        indicator.color = .systemRed
+        return indicator
+    }()
+
     
     private let errorView: UIView = {
         let view = UIView()
@@ -66,6 +77,9 @@ class HomeTableViewCell: UITableViewCell {
         errorView.addSubview(errorLabel)
         errorView.addSubview(retryButton)
         
+        contentView.addSubview(loadingIndicator)
+           
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -78,6 +92,7 @@ class HomeTableViewCell: UITableViewCell {
         errorImageView.translatesAutoresizingMaskIntoConstraints = false
         errorLabel.translatesAutoresizingMaskIntoConstraints = false
         retryButton.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             // Collection View
@@ -107,7 +122,10 @@ class HomeTableViewCell: UITableViewCell {
             retryButton.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 16),
             retryButton.centerXAnchor.constraint(equalTo: errorView.centerXAnchor),
             retryButton.heightAnchor.constraint(equalToConstant: 44),
-            retryButton.widthAnchor.constraint(equalToConstant: 120)
+            retryButton.widthAnchor.constraint(equalToConstant: 120),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
     
@@ -143,8 +161,6 @@ class HomeTableViewCell: UITableViewCell {
         self.collectionView.isHidden = true
     }
     
-    private var retryHandler: (() -> Void)?
-    
     @objc private func retryButtonTapped() {
         retryHandler?()
     }
@@ -164,9 +180,8 @@ extension HomeTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.contentSize.width - scrollView.contentOffset.x < scrollView.frame.width {
-//            print(scrollView.contentOffset)
-//        }
-//        
+        if scrollView.contentSize.width - scrollView.contentOffset.x < scrollView.frame.width {
+            self.fetchNext?()
+        }
     }
 }

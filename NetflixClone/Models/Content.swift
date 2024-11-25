@@ -6,9 +6,17 @@
 //
 
 import Foundation
-struct TrendingContent: Codable {
+struct ContentInfo: Codable {
+    enum CodingKeys: String, CodingKey {
+        case results = "results"
+        case totalPages = "total_pages"
+        case page = "page"
+    }
     let results: [Content]
+    let totalPages: Int
+    let page: Int
 }
+
 struct Content: Codable {
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -24,10 +32,19 @@ struct Content: Codable {
     let id: Int
     let originalName: String?
     let originalTitle: String?
-    let posterPath: String
+    let posterPath: String?
     let overview: String?
     let voteCount: Int
     let voteAverage: Double
     let mediaType: String?
     let releaseDate: String?
+}
+
+struct PaginationInfo {
+    let currentPage: Int
+    let totalPages: Int
+    
+    var hasMoreContent: Bool {
+        currentPage < totalPages
+    }
 }

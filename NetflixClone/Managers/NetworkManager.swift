@@ -17,60 +17,32 @@ final class NetworkManager {
     
     static let shared = NetworkManager()
     
-    func getTrendingMovies(completion: @escaping(Result<[Content], NetflixError>) -> Void) {
-        let endpoint = EndPoint.trendingMovies()
-        getData(endPoint: endpoint){ (result: Result<TrendingContent, NetflixError>) in
-            switch result {
-            case .success(let result):
-                completion(.success(result.results))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+    func getTrendingMovies(page: Int, completion: @escaping(Result<ContentInfo, NetflixError>) -> Void) {
+        let endPoint = EndPoint.trendingMovies(page: page)
+        getData(endPoint: endPoint, completion: completion)
     }
     
-    func getTrendingTv(completion: @escaping (Result<[Content], NetflixError>) -> Void) {
-        let endPoint = EndPoint.trendingTV()
-        getData(endPoint: endPoint) { (result: Result<TrendingContent, NetflixError>) in
-            switch result {
-            case .success(let result):
-                completion(.success(result.results))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+    func getTrendingTv(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        let endPoint = EndPoint.trendingTV(page: page)
+        getData(endPoint: endPoint, completion: completion)
     }
     
-    func getUpcomingMovies(completion: @escaping (Result<[Content], NetflixError>) -> Void) {
-        let endPoint = EndPoint.upcomingMovies()
-        getData(endPoint: endPoint) { (result: Result<TrendingContent, NetflixError>) in
-            switch result {
-            case .success(let result):
-                completion(.success(result.results))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+    func getUpcomingMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        let endPoint = EndPoint.upcomingMovies(page: page)
+        getData(endPoint: endPoint, completion: completion)
     }
     
-    func getPopularMovies(completion: @escaping (Result<[Content], NetflixError>) -> Void) {
-        let endPoint = EndPoint.popularMovies()
-        getData(endPoint: endPoint) { (result: Result<TrendingContent, NetflixError>) in
-            switch result {
-            case .success(let result):
-                completion(.success(result.results))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+    func getPopularMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        let endPoint = EndPoint.popularMovies(page: page)
+        getData(endPoint: endPoint, completion: completion)
     }
     
-    func getTopRatedMovies(completion: @escaping (Result<[Content], NetflixError>) -> Void) {
-        let endPoint = EndPoint.topRated()
-        getData(endPoint: endPoint) { (result: Result<TrendingContent, NetflixError>) in
+    func getTopRatedMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        let endPoint = EndPoint.topRated(page: page)
+        getData(endPoint: endPoint) { (result: Result<ContentInfo, NetflixError>) in
             switch result {
             case .success(let result):
-                completion(.success(result.results))
+                completion(.success(result))
             case .failure(let error):
                 completion(.failure(error))
             }

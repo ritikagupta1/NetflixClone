@@ -14,6 +14,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.image = .netflixlogo
         return imageView
     }()
     
@@ -31,7 +32,11 @@ class TitleCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with posterURL: String) {
+    func configure(with posterURL: String?) {
+        guard let posterURL = posterURL else {
+            imageView.image = .netflixlogo
+            return
+        }
         let url = "https://image.tmdb.org/t/p/w500/\(posterURL)"
         imageView.sd_setImage(with: URL(string: url))
     }

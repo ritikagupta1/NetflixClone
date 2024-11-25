@@ -11,6 +11,10 @@ class HomeVC: NetflixDataLoadingVC {
     
     var contentList: [Sections: [Content]] = [:]
     
+    var sectionPaginationInfo: [Sections: PaginationInfo] = [:]
+    
+    var isLoadingFurtherContent = false
+    
     var state: State = .loading {
         didSet {
             self.updateUI()
@@ -38,7 +42,7 @@ class HomeVC: NetflixDataLoadingVC {
     }
     
     private func setupPullToRefresh() {
-        var refreshControl = UIRefreshControl()
+        let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         homeFeedTableView.refreshControl = refreshControl
     }
@@ -63,7 +67,7 @@ class HomeVC: NetflixDataLoadingVC {
         self.navigationController?.navigationBar.tintColor = .white
     }
     
-    @objc func getAllContentData() {
+    @objc func getAllContentData(page: Int = 1) {
         self.contentList = [:]
         state = .loading
         
@@ -74,12 +78,13 @@ class HomeVC: NetflixDataLoadingVC {
             let call = getSectionCall(section: section)
             dispatchGroup.enter()
             
-            call { [weak self] result in
+            call(page) { [weak self] result in
                 guard let self = self else { return }
                 defer { dispatchGroup.leave() }
                 switch result {
                 case .success(let content):
-                    self.contentList[section] = content
+                    self.contentList[section] = content.results
+                    self.sectionPaginationInfo[section] = PaginationInfo(currentPage: content.page, totalPages: content.totalPages)
                 case .failure(_):
                     errorSections.append(section)
                     self.contentList[section] = []
@@ -113,32 +118,33 @@ class HomeVC: NetflixDataLoadingVC {
         }
     }
     
-    func getSectionCall(section: Sections) -> (@escaping (Result<[Content], NetflixError>) -> Void) -> Void  {
+    func getSectionCall(section: Sections) -> (Int, @escaping (Result<ContentInfo, NetflixError>) -> Void) -> Void  {
         
         switch section {
         case .trendingMovies:
-            return NetworkManager.shared.getTrendingMovies(completion:)
+            return NetworkManager.shared.getTrendingMovies
         case .trendingTv:
             return NetworkManager.shared.getTrendingTv
         case .popular:
-            return NetworkManager.shared.getPopularMovies(completion:)
+            return NetworkManager.shared.getUpcomingMovies
         case .upcomingMovies:
-            return NetworkManager.shared.getUpcomingMovies(completion:)
+            return NetworkManager.shared.getUpcomingMovies
         case .topRated:
-            return NetworkManager.shared.getTopRatedMovies(completion:)
+            return NetworkManager.shared.getTopRatedMovies
         }
     }
     
-    private func reloadSpecificSection(_ section: Sections) {
+    private func reloadSpecificSection(_ section: Sections, page: Int = 1) {
         let call = getSectionCall(section: section)
         
-        call { [weak self] result in
+        call(page) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch result {
                 case .success(let content):
-                    self.contentList[section] = content
+                    self.contentList[section] = content.results
+                    self.sectionPaginationInfo[section] = PaginationInfo(currentPage: content.page, totalPages: content.totalPages)
                     // Reload the specific section
                     self.homeFeedTableView.reloadSections(IndexSet(integer: section.rawValue), with: .automatic)
                 case .failure(_):
@@ -148,6 +154,45 @@ class HomeVC: NetflixDataLoadingVC {
         }
     }
     
+    private func getMoreContent(for section: Sections) {
+        guard let cell = homeFeedTableView.cellForRow(at: IndexPath(row: 0, section: section.rawValue)) as? HomeTableViewCell else { return }
+        
+        let call = getSectionCall(section: section)
+        
+        if self.sectionPaginationInfo[section]?.hasMoreContent ?? false, let page = self.sectionPaginationInfo[section]?.currentPage, !isLoadingFurtherContent {
+            isLoadingFurtherContent = true
+            cell.loadingIndicator.startAnimating()
+            let currentOffset = cell.collectionView.contentOffset
+            
+            call(page + 1) { [weak self] result in
+                
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    cell.loadingIndicator.stopAnimating()
+                    switch result {
+                    case .success(let content):
+                        var existingContent = self.contentList[section]
+                        existingContent?.append(contentsOf: content.results)
+                        self.contentList[section] = existingContent
+                        self.sectionPaginationInfo[section] = PaginationInfo(currentPage: content.page, totalPages: content.totalPages)
+                        if let cell = self.homeFeedTableView.cellForRow(at: IndexPath(row: 0, section: section.rawValue)) as? HomeTableViewCell,
+                           let content = self.contentList[section] {
+                            // Update data
+                            cell.configure(with: content)
+                            cell.collectionView.reloadData()
+                            // Restore position
+                            cell.collectionView.setContentOffset(currentOffset, animated: false)
+                        }
+                        
+                    case .failure(_):
+                        self.homeFeedTableView.reloadSections(IndexSet(integer: section.rawValue), with: .none)
+                    }
+                    
+                    self.isLoadingFurtherContent = false
+                }
+            }
+        }
+    }
     
     func updateUI() {
         switch state {
@@ -173,6 +218,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell, let section = Sections(rawValue: indexPath.section) else {
             return UITableViewCell()
+        }
+        
+        cell.fetchNext = {
+            self.getMoreContent(for: section)
         }
         
         if let content = contentList[section], !content.isEmpty {
@@ -220,10 +269,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let defaultOffset = self.view.safeAreaInsets.top
-//        let actualOffset = scrollView.contentOffset.y + self.view.safeAreaInsets.top
-//        
-//        self.navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: -max(0, min(defaultOffset, actualOffset)))
+        let defaultOffset = self.view.safeAreaInsets.top
+        let actualOffset = scrollView.contentOffset.y + self.view.safeAreaInsets.top
+        
+        self.navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: -max(0, min(defaultOffset, actualOffset)))
     }
 }
 
