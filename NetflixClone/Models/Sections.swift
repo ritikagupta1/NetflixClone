@@ -17,15 +17,15 @@ enum Sections: Int, CaseIterable {
     var title: String {
         switch self {
         case .trendingMovies:
-            return "Trending Movies"
+            return Constants.trendingMoviesTitle
         case .trendingTv:
-            return "Trending TV"
+            return Constants.trendingTvTitle
         case .popular:
-            return "Popular"
+            return Constants.popularMoviesTitle
         case .upcomingMovies:
-            return "Upcoming Movies"
+            return Constants.upcomingMoviesTitle
         case .topRated:
-            return "Top Rated"
+            return Constants.topRatedTitle
         }
     }
 }

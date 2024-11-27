@@ -16,7 +16,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     private func configure() {
-        let homeVC = UINavigationController(rootViewController: HomeVC())
+        let homeVC = UINavigationController(rootViewController: HomeVC(viewModel: HomeViewModel()))
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         
         let comingSoonVC = UINavigationController(rootViewController: ComingSoonVC())

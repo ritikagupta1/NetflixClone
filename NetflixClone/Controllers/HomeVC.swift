@@ -8,17 +8,20 @@
 import UIKit
 
 class HomeVC: NetflixDataLoadingVC {
+    private let rowHeight: CGFloat = 200
+    private let sectionHeaderHeight: CGFloat = 40
+    private let headerHeight: CGFloat = 450
     
-    var contentList: [Sections: [Content]] = [:]
+    var viewModel: HomeViewModel
     
-    var sectionPaginationInfo: [Sections: PaginationInfo] = [:]
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        viewModel.delegate = self
+    }
     
-    var isLoadingFurtherContent = false
-    
-    var state: State = .loading {
-        didSet {
-            self.updateUI()
-        }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private let homeFeedTableView: UITableView = {
@@ -28,32 +31,17 @@ class HomeVC: NetflixDataLoadingVC {
         return tableView
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureVC()
+        configureTableview()
+        self.viewModel.getAllContentData()
+    }
+    
+    private func configureVC() {
         view.backgroundColor = .systemBackground
-        view.addSubview(homeFeedTableView)
         configureNavBar()
-        homeFeedTableView.dataSource = self
-        homeFeedTableView.delegate = self
-        homeFeedTableView.tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 450))
         setupPullToRefresh()
-        getAllContentData()
-    }
-    
-    private func setupPullToRefresh() {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-        homeFeedTableView.refreshControl = refreshControl
-    }
-
-    @objc private func refreshData() {
-        getAllContentData()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        homeFeedTableView.frame = view.bounds
     }
     
     private func configureNavBar() {
@@ -67,151 +55,55 @@ class HomeVC: NetflixDataLoadingVC {
         self.navigationController?.navigationBar.tintColor = .white
     }
     
-    @objc func getAllContentData(page: Int = 1) {
-        self.contentList = [:]
-        state = .loading
-        
-        let dispatchGroup = DispatchGroup()
-        var errorSections: [Sections] = []
-        
-        Sections.allCases.forEach { section in
-            let call = getSectionCall(section: section)
-            dispatchGroup.enter()
-            
-            call(page) { [weak self] result in
-                guard let self = self else { return }
-                defer { dispatchGroup.leave() }
-                switch result {
-                case .success(let content):
-                    self.contentList[section] = content.results
-                    self.sectionPaginationInfo[section] = PaginationInfo(currentPage: content.page, totalPages: content.totalPages)
-                case .failure(_):
-                    errorSections.append(section)
-                    self.contentList[section] = []
-                }
-            }
-            
-        }
-        
-        dispatchGroup.notify(queue: .main) { [weak self] in
-            guard let self = self else { return }
-
-            self.homeFeedTableView.refreshControl?.endRefreshing()
-            // error for sections
-            if !errorSections.isEmpty {
-                self.state = .error(errorSections)
-                self.homeFeedTableView.reloadData()
-                self.view.bringSubviewToFront(self.homeFeedTableView)
-                return
-            }
-            
-            // completely empty
-            if self.contentList.values.allSatisfy({ $0.isEmpty }) {
-                self.state = .empty
-                return
-            }
-            
-            
-            self.state = .loaded
-            self.homeFeedTableView.reloadData()
-            self.view.bringSubviewToFront(self.homeFeedTableView)
-        }
+    private func setupPullToRefresh() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        homeFeedTableView.refreshControl = refreshControl
     }
     
-    func getSectionCall(section: Sections) -> (Int, @escaping (Result<ContentInfo, NetflixError>) -> Void) -> Void  {
-        
-        switch section {
-        case .trendingMovies:
-            return NetworkManager.shared.getTrendingMovies
-        case .trendingTv:
-            return NetworkManager.shared.getTrendingTv
-        case .popular:
-            return NetworkManager.shared.getUpcomingMovies
-        case .upcomingMovies:
-            return NetworkManager.shared.getUpcomingMovies
-        case .topRated:
-            return NetworkManager.shared.getTopRatedMovies
-        }
+    @objc private func refreshData() {
+        self.viewModel.getAllContentData()
     }
     
-    private func reloadSpecificSection(_ section: Sections, page: Int = 1) {
-        let call = getSectionCall(section: section)
+    private func configureTableview() {
+        view.addSubview(homeFeedTableView)
         
-        call(page) { [weak self] result in
-            guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let content):
-                    self.contentList[section] = content.results
-                    self.sectionPaginationInfo[section] = PaginationInfo(currentPage: content.page, totalPages: content.totalPages)
-                    // Reload the specific section
-                    self.homeFeedTableView.reloadSections(IndexSet(integer: section.rawValue), with: .automatic)
-                case .failure(_):
-                    self.homeFeedTableView.reloadSections(IndexSet(integer: section.rawValue), with: .automatic)
-                }
-            }
-        }
+        homeFeedTableView.dataSource = self
+        homeFeedTableView.delegate = self
+        homeFeedTableView.tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: headerHeight))
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        homeFeedTableView.frame = view.bounds
     }
     
     private func getMoreContent(for section: Sections) {
         guard let cell = homeFeedTableView.cellForRow(at: IndexPath(row: 0, section: section.rawValue)) as? HomeTableViewCell else { return }
         
-        let call = getSectionCall(section: section)
-        
-        if self.sectionPaginationInfo[section]?.hasMoreContent ?? false, let page = self.sectionPaginationInfo[section]?.currentPage, !isLoadingFurtherContent {
+        if viewModel.canFetchMoreContent(for: section) {
             cell.loadingIndicator.startAnimating()
-            isLoadingFurtherContent = true
             cell.collectionView.isUserInteractionEnabled = false
             let currentOffset = cell.collectionView.contentOffset
             
-            call(page + 1) { [weak self] result in
-                
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    cell.loadingIndicator.stopAnimating()
-                    switch result {
-                    case .success(let content):
-                        var existingContent = self.contentList[section]
-                        existingContent?.append(contentsOf: content.results)
-                        self.contentList[section] = existingContent
-                        self.sectionPaginationInfo[section] = PaginationInfo(currentPage: content.page, totalPages: content.totalPages)
-                        if let cell = self.homeFeedTableView.cellForRow(at: IndexPath(row: 0, section: section.rawValue)) as? HomeTableViewCell,
-                           let content = self.contentList[section] {
-                            // Update data
-                            cell.configure(with: content)
-                            cell.collectionView.reloadData()
-                            // Restore position
-                            cell.collectionView.setContentOffset(currentOffset, animated: false)
-                            
-                        }
-                        
-                    case .failure(_):
-                        self.homeFeedTableView.reloadSections(IndexSet(integer: section.rawValue), with: .none)
-                    }
-                    
-                    cell.collectionView.isUserInteractionEnabled = true
-                    self.isLoadingFurtherContent = false
+            viewModel.getMoreContent(for: section, completion: { success in
+                cell.loadingIndicator.stopAnimating()
+                guard success else {
+                    self.homeFeedTableView.reloadSections(IndexSet(integer: section.rawValue), with: .none)
+                    return
                 }
-            }
-        }
-    }
-    
-    func updateUI() {
-        switch state {
-        case .loading:
-            self.showLoadingView()
-            
-        case .loaded, .error:
-            self.dismissLoadingIndicator()
-            self.homeFeedTableView.isHidden = false
-            
-        case .empty:
-            self.dismissLoadingIndicator()
-            self.homeFeedTableView.isHidden = true
-            self.showEmptyStateView(onRefresh: {
-                // since this is for completely empty state, we need to refresh all data
-                self.getAllContentData()
+                
+                if let cell = self.homeFeedTableView.cellForRow(at: IndexPath(row: 0, section: section.rawValue)) as? HomeTableViewCell,
+                   let content = self.viewModel.contentList[section] {
+                    // Update data
+                    cell.configure(with: content)
+                    cell.collectionView.reloadData()
+                    // Restore position
+                    cell.collectionView.setContentOffset(currentOffset, animated: false)
+                    
+                }
+                
+                cell.collectionView.isUserInteractionEnabled = true
             })
         }
     }
@@ -227,16 +119,15 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
             self.getMoreContent(for: section)
         }
         
-        if let content = contentList[section], !content.isEmpty {
+        if let content = viewModel.contentList[section], !content.isEmpty {
             cell.configure(with: content)
         } else {
             cell.configureErrorState {
-                self.reloadSpecificSection(section)
+                self.viewModel.reloadSpecificSection(section)
             }
         }
         
         return cell
-                
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -248,11 +139,11 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return rowHeight
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return sectionHeaderHeight
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -266,7 +157,6 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         headerView.textLabel?.frame = CGRect(x: headerView.bounds.origin.x + 20, y: headerView.bounds.origin.y, width: 140, height: headerView.bounds.height)
     }
     
-    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         Sections(rawValue: section)?.title
     }
@@ -279,10 +169,31 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-
-enum State {
-    case loading
-    case loaded
-    case empty
-    case error([Sections])
+extension HomeVC: HomeViewModelDelegate {
+    func updateUI(with state: State) {
+        self.homeFeedTableView.refreshControl?.endRefreshing()
+        
+        switch state {
+        case .loading:
+            self.showLoadingView()
+            
+        case .loaded, .error:
+            self.dismissLoadingIndicator()
+            self.homeFeedTableView.isHidden = false
+            self.homeFeedTableView.reloadData()
+            self.view.bringSubviewToFront(self.homeFeedTableView)
+            
+        case .empty:
+            self.dismissLoadingIndicator()
+            self.homeFeedTableView.isHidden = true
+            self.showEmptyStateView(onRefresh: {
+                // since this is for completely empty state, we need to refresh all data
+                self.viewModel.getAllContentData()
+            })
+        }
+    }
+    
+    func reloadSection(index: IndexSet) {
+        self.homeFeedTableView.reloadSections(index, with: .automatic)
+    }
 }
