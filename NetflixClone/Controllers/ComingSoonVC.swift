@@ -8,10 +8,16 @@
 import UIKit
 
 class ComingSoonVC: NetflixDataLoadingVC {
-    var upcomingMovies: [Content] = []
-    var isLoadingMovies: Bool = false
-    var hasMoreMovies: Bool = true
-    var page: Int = 1
+    var viewModel: ComingSoonViewModel
+    
+    init(viewModel: ComingSoonViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let upcomingTableView: UITableView = {
         let tableview = UITableView()
@@ -29,7 +35,7 @@ class ComingSoonVC: NetflixDataLoadingVC {
     
     private func configureViewController() {
         self.view.backgroundColor = .systemBackground
-        self.title = "Upcoming"
+        self.title = Constants.upcomingScreenTitle
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationItem.largeTitleDisplayMode = .always
     }
@@ -48,22 +54,15 @@ class ComingSoonVC: NetflixDataLoadingVC {
     
     private func getUpcomingMovies() {
         self.showLoadingView()
-        self.isLoadingMovies = true
-        NetworkManager.shared.getUpcomingMovies(page: page) { [weak self] result in
-            self?.isLoadingMovies = false
+        self.viewModel.getUpcomingMovies() { [weak self] success in
             guard let self = self else {
                 return
             }
             self.dismissLoadingIndicator()
-            switch result {
-            case .success(let content):
+            if success {
                 DispatchQueue.main.async {
-                    self.upcomingMovies.append(contentsOf: content.results)
-                    self.hasMoreMovies = content.page < content.totalPages
                     self.upcomingTableView.reloadData()
                 }
-            case .failure(let error):
-                print(error)
             }
         }
     }
@@ -71,14 +70,14 @@ class ComingSoonVC: NetflixDataLoadingVC {
 
 extension ComingSoonVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        upcomingMovies.count
+        self.viewModel.upcomingMovies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier:TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
             return UITableViewCell()
         }
-        cell.configureCell(with: upcomingMovies[indexPath.row])
+        cell.configureCell(with: self.viewModel.upcomingMovies[indexPath.row])
         return cell
     }
     
@@ -91,8 +90,7 @@ extension ComingSoonVC: UITableViewDelegate, UITableViewDataSource {
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.height
         
-        if offSetY > contentHeight - height, !isLoadingMovies, hasMoreMovies {
-            self.page += 1
+        if offSetY > contentHeight - height && viewModel.shouldLoadMore() {
             self.getUpcomingMovies()
         }
     }

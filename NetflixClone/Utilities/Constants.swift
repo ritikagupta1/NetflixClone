@@ -12,4 +12,6 @@ enum Constants {
     static let popularMoviesTitle = "Popular"
     static let upcomingMoviesTitle = "Upcoming Movies"
     static let topRatedTitle = "Top Rated"
+    
+    static let upcomingScreenTitle = "Upcoming"
 }

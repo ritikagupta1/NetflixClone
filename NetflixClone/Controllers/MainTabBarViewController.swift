@@ -19,7 +19,7 @@ class MainTabBarViewController: UITabBarController {
         let homeVC = UINavigationController(rootViewController: HomeVC(viewModel: HomeViewModel()))
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         
-        let comingSoonVC = UINavigationController(rootViewController: ComingSoonVC())
+        let comingSoonVC = UINavigationController(rootViewController: ComingSoonVC(viewModel: ComingSoonViewModel()))
         comingSoonVC.tabBarItem = UITabBarItem(title: "Coming Soon", image: UIImage(systemName: "play.circle"), tag: 1)
         
         let topSearchesVC = UINavigationController(rootViewController: TopSearchesVC())
