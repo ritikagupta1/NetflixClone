@@ -67,4 +67,19 @@ extension EndPoint {
                          URLQueryItem(name: "language", value: "en-US"),
                          URLQueryItem(name: "page" , value: "\(page)")])
     }
+    
+    static func discoverMovies(page: Int) -> EndPoint {
+        return EndPoint(
+            path: "/3/discover/movie",
+            queryItems: [URLQueryItem(name: "api_key" , value: apiKey),
+                         URLQueryItem(name: "page" , value: "\(page)")])
+    }
+    
+    static func searchMovies(page: Int, query: String) -> EndPoint {
+        return EndPoint(
+            path: "/3/search/movie",
+            queryItems: [URLQueryItem(name: "api_key" , value: apiKey),
+                         URLQueryItem(name: "page" , value: "\(page)"),
+                         URLQueryItem(name: "query", value: query)])
+    }
 }

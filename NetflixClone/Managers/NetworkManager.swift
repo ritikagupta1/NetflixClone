@@ -39,14 +39,17 @@ final class NetworkManager {
     
     func getTopRatedMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
         let endPoint = EndPoint.topRated(page: page)
-        getData(endPoint: endPoint) { (result: Result<ContentInfo, NetflixError>) in
-            switch result {
-            case .success(let result):
-                completion(.success(result))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        getData(endPoint: endPoint, completion: completion)
+    }
+    
+    func discoverMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        let endPoint = EndPoint.discoverMovies(page: page)
+        getData(endPoint: endPoint, completion: completion)
+    }
+    
+    func searchMovies(page: Int, query: String, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        let endPoint = EndPoint.searchMovies(page: page, query: query)
+        getData(endPoint: endPoint, completion: completion)
     }
     
     func getData<T: Codable>(endPoint: EndPoint, completion: @escaping (Result<T, NetflixError>) -> Void) {
@@ -76,6 +79,7 @@ final class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(T.self, from: data)
+                sleep(3)
                 completion(.success(result))
             } catch {
                 completion(.failure(.invalidData))

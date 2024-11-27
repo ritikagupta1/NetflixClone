@@ -30,7 +30,6 @@ class HomeTableViewCell: UITableViewCell {
         indicator.color = .systemRed
         return indicator
     }()
-
     
     private let errorView: UIView = {
         let view = UIView()
@@ -135,7 +134,7 @@ class HomeTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: 140, height: self.contentView.bounds.height)
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: 140, height: collectionView.collectionViewLayout.collectionViewContentSize.height)
     }
     
     func configure(with content: [Content]) {

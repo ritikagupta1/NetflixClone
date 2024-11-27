@@ -160,8 +160,9 @@ class HomeVC: NetflixDataLoadingVC {
         let call = getSectionCall(section: section)
         
         if self.sectionPaginationInfo[section]?.hasMoreContent ?? false, let page = self.sectionPaginationInfo[section]?.currentPage, !isLoadingFurtherContent {
-            isLoadingFurtherContent = true
             cell.loadingIndicator.startAnimating()
+            isLoadingFurtherContent = true
+            cell.collectionView.isUserInteractionEnabled = false
             let currentOffset = cell.collectionView.contentOffset
             
             call(page + 1) { [weak self] result in
@@ -182,12 +183,14 @@ class HomeVC: NetflixDataLoadingVC {
                             cell.collectionView.reloadData()
                             // Restore position
                             cell.collectionView.setContentOffset(currentOffset, animated: false)
+                            
                         }
                         
                     case .failure(_):
                         self.homeFeedTableView.reloadSections(IndexSet(integer: section.rawValue), with: .none)
                     }
                     
+                    cell.collectionView.isUserInteractionEnabled = true
                     self.isLoadingFurtherContent = false
                 }
             }
