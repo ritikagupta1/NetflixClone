@@ -15,6 +15,8 @@ class NetflixDataLoadingVC: UIViewController {
     }
     
     func showLoadingView() {
+        guard containerView == nil else { return }
+        
         containerView = UIView(frame: view.bounds)
         
         containerView.backgroundColor = .systemBackground
@@ -38,6 +40,8 @@ class NetflixDataLoadingVC: UIViewController {
     }
     
     func dismissLoadingIndicator() {
+        guard containerView != nil else { return }
+        
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25) {
                 self.containerView.alpha = 0.0
