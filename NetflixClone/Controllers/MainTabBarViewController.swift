@@ -22,7 +22,7 @@ class MainTabBarViewController: UITabBarController {
         let comingSoonVC = UINavigationController(rootViewController: ComingSoonVC(viewModel: ComingSoonViewModel()))
         comingSoonVC.tabBarItem = UITabBarItem(title: "Coming Soon", image: UIImage(systemName: "play.circle"), tag: 1)
         
-        let topSearchesVC = UINavigationController(rootViewController: TopSearchesVC())
+        let topSearchesVC = UINavigationController(rootViewController: TopSearchesVC(viewModel: TopSearchViewModel()))
         topSearchesVC.tabBarItem = UITabBarItem(title: "Top Searches", image: UIImage(systemName: "magnifyingglass"), tag: 2)
         
         let downloadsVC = UINavigationController(rootViewController: DownloadsVC())

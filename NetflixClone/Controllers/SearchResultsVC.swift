@@ -8,14 +8,20 @@
 import UIKit
 
 class SearchResultsVC: NetflixDataLoadingVC {
-    var searchCollectionView: UICollectionView!
+    var viewModel: SearchResultsViewModel
     
-    var searchResults: [Content] = []
-    var page = 1
+    var searchCollectionView: UICollectionView!
     var getMoreResults: ((Int) -> Void)?
     
-    var isLoadingSearchResults: Bool = true
-    var hasMoreSearchResults: Bool = true
+    init(viewModel: SearchResultsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +56,7 @@ class SearchResultsVC: NetflixDataLoadingVC {
 
 extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchResults.count
+        return viewModel.numberOfItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -58,17 +64,16 @@ extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource 
             return UICollectionViewCell()
         }
         
-        cell.configure(with: searchResults[indexPath.row].posterPath)
+        cell.configure(with: viewModel.getPosterPath(for: indexPath.row))
         
         return cell
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentSize.height - scrollView.contentOffset.y < scrollView.bounds.height, !isLoadingSearchResults, hasMoreSearchResults {
+        if scrollView.contentSize.height - scrollView.contentOffset.y < scrollView.bounds.height, viewModel.shouldLoadMoreContent() {
             self.showLoadingView()
-            self.page += 1
-            self.isLoadingSearchResults = true
-            self.getMoreResults?(page)
+            self.viewModel.isLoadingSearchResults = true
+            self.getMoreResults?(viewModel.page)
         }
     }
 }

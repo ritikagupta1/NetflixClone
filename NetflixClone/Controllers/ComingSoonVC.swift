@@ -9,6 +9,7 @@ import UIKit
 
 class ComingSoonVC: NetflixDataLoadingVC {
     var viewModel: ComingSoonViewModel
+    let rowHeight: CGFloat = 160
     
     init(viewModel: ComingSoonViewModel) {
         self.viewModel = viewModel
@@ -70,19 +71,19 @@ class ComingSoonVC: NetflixDataLoadingVC {
 
 extension ComingSoonVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.viewModel.upcomingMovies.count
+        self.viewModel.getNumberOfRows()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier:TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
             return UITableViewCell()
         }
-        cell.configureCell(with: self.viewModel.upcomingMovies[indexPath.row])
+        cell.configureCell(with: self.viewModel.getContent(for: indexPath.row))
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        return rowHeight
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

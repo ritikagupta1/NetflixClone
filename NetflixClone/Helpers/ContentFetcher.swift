@@ -12,6 +12,8 @@ protocol ContentFetcher {
         page: Int,
         completion: @escaping (Result<ContentInfo, NetflixError>) -> Void
     )
+    
+    func discoverMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void)
 }
 
 class ContentRepository: ContentFetcher{
@@ -33,4 +35,9 @@ class ContentRepository: ContentFetcher{
             NetworkManager.shared.getTopRatedMovies(page: page, completion: completion)
         }
     }
+    
+    func discoverMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        NetworkManager.shared.discoverMovies(page: page, completion: completion)
+    }
+    
 }

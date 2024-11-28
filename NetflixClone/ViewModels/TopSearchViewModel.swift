@@ -1,16 +1,17 @@
 //
-//  ComingSoonViewModel.swift
+//  TopSearchViewModel.swift
 //  NetflixClone
 //
-//  Created by Ritika Gupta on 27/11/24.
+//  Created by Ritika Gupta on 28/11/24.
 //
 
 import Foundation
-class ComingSoonViewModel {
-    var upcomingMovies: [Content] = []
+class TopSearchViewModel {
+    var topSearchMovies: [Content] = []
     var isLoadingMovies: Bool = false
     var hasMoreMovies: Bool = true
     var page: Int = 1
+    
     
     let contentRepository: ContentFetcher
     
@@ -18,7 +19,7 @@ class ComingSoonViewModel {
         self.contentRepository = contentRepository
     }
     
-    func getUpcomingMovies(completion: @escaping (Bool) -> Void) {
+    func getTopSearchMovies(completion: @escaping (Bool) -> Void) {
         guard !isLoadingMovies, hasMoreMovies else {
             completion(false)
             return
@@ -26,36 +27,37 @@ class ComingSoonViewModel {
         
         self.isLoadingMovies = true
         
-        contentRepository.fetchContent(for: .upcomingMovies, page: page) { [weak self] result in
+        contentRepository.discoverMovies(page: page) { [weak self] result in
+            self?.isLoadingMovies = false
             guard let self = self else {
                 completion(false)
                 return
             }
             
-            self.isLoadingMovies = false
-            
             switch result {
-            case .success(let contentResponse):
-                self.upcomingMovies.append(contentsOf: contentResponse.results)
-                self.hasMoreMovies = contentResponse.page < contentResponse.totalPages
-                self.page += 1
-                completion(true)
-                
-            case .failure:
+            case .success(let content):
+                DispatchQueue.main.async {
+                    self.topSearchMovies.append(contentsOf: content.results)
+                    self.hasMoreMovies = content.page < content.totalPages
+                    self.page += 1
+                    completion(true)
+                }
+            case .failure(let error):
+                print(error)
                 completion(false)
             }
         }
     }
     
     func shouldLoadMore() -> Bool {
-        return  hasMoreMovies && !isLoadingMovies
+        !isLoadingMovies && hasMoreMovies
     }
     
     func getNumberOfRows() -> Int {
-        upcomingMovies.count
+        topSearchMovies.count
     }
     
     func getContent(for index: Int) -> Content {
-        upcomingMovies[index]
+        topSearchMovies[index]
     }
 }
