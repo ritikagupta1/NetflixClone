@@ -7,13 +7,20 @@
 
 import UIKit
 
+protocol HomeTableViewCellDelegate: AnyObject {
+    func didTapCell(in section: Sections, at index: Int)
+}
+
 class HomeTableViewCell: UITableViewCell {
     static let identifier = "HomeTableViewCell"
     
     var content: [Content] = []
+    var section: Sections?
     
     private var retryHandler: (() -> Void)?
     var fetchNext: (() -> Void)?
+    
+    weak var delegate: HomeTableViewCellDelegate?
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -137,8 +144,9 @@ class HomeTableViewCell: UITableViewCell {
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: 140, height: collectionView.collectionViewLayout.collectionViewContentSize.height)
     }
     
-    func configure(with content: [Content]) {
+    func configure(with content: [Content], section: Sections) {
         self.content = content
+        self.section = section
         self.collectionView.reloadData()
         self.errorView.isHidden = true
         self.collectionView.isHidden = false
@@ -176,6 +184,11 @@ extension HomeTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
         }
         cell.configure(with: content[indexPath.row].posterPath)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        delegate?.didTapCell(in: self.section ?? .trendingMovies, at: indexPath.row)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

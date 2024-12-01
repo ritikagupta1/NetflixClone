@@ -16,4 +16,6 @@ enum Constants {
     static let upcomingScreenTitle = "Upcoming"
     static let searchScreenTitle = "Search"
     static let searchBarPlaceholder = "Search for movies"
+    
+    static let downloadButtonTitle = "Download"
 }

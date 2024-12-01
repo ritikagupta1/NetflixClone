@@ -18,37 +18,42 @@ final class NetworkManager {
     static let shared = NetworkManager()
     
     func getTrendingMovies(page: Int, completion: @escaping(Result<ContentInfo, NetflixError>) -> Void) {
-        let endPoint = EndPoint.trendingMovies(page: page)
+        let endPoint = TMDBEndPoint.trendingMovies(page: page)
         getData(endPoint: endPoint, completion: completion)
     }
     
     func getTrendingTv(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
-        let endPoint = EndPoint.trendingTV(page: page)
+        let endPoint = TMDBEndPoint.trendingTV(page: page)
         getData(endPoint: endPoint, completion: completion)
     }
     
     func getUpcomingMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
-        let endPoint = EndPoint.upcomingMovies(page: page)
+        let endPoint = TMDBEndPoint.upcomingMovies(page: page)
         getData(endPoint: endPoint, completion: completion)
     }
     
     func getPopularMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
-        let endPoint = EndPoint.popularMovies(page: page)
+        let endPoint = TMDBEndPoint.popularMovies(page: page)
         getData(endPoint: endPoint, completion: completion)
     }
     
     func getTopRatedMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
-        let endPoint = EndPoint.topRated(page: page)
+        let endPoint = TMDBEndPoint.topRated(page: page)
         getData(endPoint: endPoint, completion: completion)
     }
     
     func discoverMovies(page: Int, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
-        let endPoint = EndPoint.discoverMovies(page: page)
+        let endPoint = TMDBEndPoint.discoverMovies(page: page)
         getData(endPoint: endPoint, completion: completion)
     }
     
     func searchMovies(page: Int, query: String, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
-        let endPoint = EndPoint.searchMovies(page: page, query: query)
+        let endPoint = TMDBEndPoint.searchMovies(page: page, query: query)
+        getData(endPoint: endPoint, completion: completion)
+    }
+    
+    func getMovieTrailer(query: String, completion: @escaping (Result<TrailerResponse, NetflixError>) -> Void) {
+        let endPoint = YouTubeEndPoint.getMovies(query: query)
         getData(endPoint: endPoint, completion: completion)
     }
     

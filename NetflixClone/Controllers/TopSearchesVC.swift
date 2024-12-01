@@ -121,6 +121,7 @@ extension TopSearchesVC: UISearchResultsUpdating {
         }
         
         searchResultVC.viewModel.resetSearchResults()
+        searchResultVC.searchCollectionView.reloadData()
         searchResultVC.showLoadingView()
         
         func handleSearchResults(result: Result<ContentInfo, NetflixError>) {
@@ -132,10 +133,12 @@ extension TopSearchesVC: UISearchResultsUpdating {
                     searchResultVC.searchCollectionView.reloadData()
                 }
             
-            case .failure(let error):
-                print(error)
-                searchResultVC.viewModel.resetSearchResults()
-                searchResultVC.searchCollectionView.reloadData()
+            case .failure(_):
+                DispatchQueue.main.async {
+                    searchResultVC.viewModel.resetSearchResults()
+                    searchResultVC.searchCollectionView.reloadData()
+                }
+                
             }
         }
         

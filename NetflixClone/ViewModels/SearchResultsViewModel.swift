@@ -23,13 +23,14 @@ class SearchResultsViewModel {
     
     func resetSearchResults() {
         isLoadingSearchResults = false
+        hasMoreSearchResults = false
         searchResults.removeAll()
         page = 1
     }
     
     func updateResults(with content: ContentInfo) {
         isLoadingSearchResults = false
-        hasMoreSearchResults = content.page < content.totalPages
+        hasMoreSearchResults = content.page < content.totalPages && !content.results.isEmpty
         page += 1
         searchResults.append(contentsOf: content.results)
     }

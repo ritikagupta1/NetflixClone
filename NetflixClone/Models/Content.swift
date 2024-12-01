@@ -34,8 +34,8 @@ struct Content: Codable {
     let originalTitle: String?
     let posterPath: String?
     let overview: String?
-    let voteCount: Int
-    let voteAverage: Double
+    let voteCount: Int?
+    let voteAverage: Double?
     let mediaType: String?
     let releaseDate: String?
 }

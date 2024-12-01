@@ -40,9 +40,9 @@ class NetflixDataLoadingVC: UIViewController {
     }
     
     func dismissLoadingIndicator() {
-        guard containerView != nil else { return }
-        
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, let _ = self.containerView else { return }
+
             UIView.animate(withDuration: 0.25) {
                 self.containerView.alpha = 0.0
                 self.containerView.removeFromSuperview()

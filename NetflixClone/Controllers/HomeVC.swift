@@ -53,6 +53,7 @@ class HomeVC: NetflixDataLoadingVC {
         self.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil), UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)]
         self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.isTranslucent = false
     }
     
     private func setupPullToRefresh() {
@@ -96,7 +97,7 @@ class HomeVC: NetflixDataLoadingVC {
                 if let cell = self.homeFeedTableView.cellForRow(at: IndexPath(row: 0, section: section.rawValue)) as? HomeTableViewCell,
                    let content = self.viewModel.contentList[section] {
                     // Update data
-                    cell.configure(with: content)
+                    cell.configure(with: content, section: section)
                     cell.collectionView.reloadData()
                     // Restore position
                     cell.collectionView.setContentOffset(currentOffset, animated: false)
@@ -114,13 +115,13 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell, let section = Sections(rawValue: indexPath.section) else {
             return UITableViewCell()
         }
-        
+        cell.delegate = self
         cell.fetchNext = {
             self.getMoreContent(for: section)
         }
         
         if let content = viewModel.contentList[section], !content.isEmpty {
-            cell.configure(with: content)
+            cell.configure(with: content, section: section)
         } else {
             cell.configureErrorState {
                 self.viewModel.reloadSpecificSection(section)
@@ -196,4 +197,15 @@ extension HomeVC: HomeViewModelDelegate {
     func reloadSection(index: IndexSet) {
         self.homeFeedTableView.reloadSections(index, with: .automatic)
     }
+}
+
+extension HomeVC: HomeTableViewCellDelegate {
+    func didTapCell(in section: Sections, at index: Int) {
+        let content = self.viewModel.contentList[section]?[index]
+        let model = ContentPreviewModel(contentTitle: content?.originalTitle ?? content?.originalName ?? "Unknown", contentOverView: content?.overview ?? "Unknown")
+        let contentPreviewVC = ContentPreviewViewController()
+        contentPreviewVC.configure(with: model)
+        self.navigationController?.pushViewController(contentPreviewVC, animated: true)
+    }
+
 }
