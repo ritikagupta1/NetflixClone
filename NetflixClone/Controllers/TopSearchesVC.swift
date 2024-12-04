@@ -114,9 +114,14 @@ extension TopSearchesVC: UISearchResultsUpdating {
             return
         }
         let minimumQueryLength = 2
-        guard let query = searchController.searchBar.text, !query.trimmingCharacters(in: .whitespaces).isEmpty, query.trimmingCharacters(in: .whitespaces).count > minimumQueryLength else {
-            searchResultVC.viewModel.resetSearchResults()
-            searchResultVC.searchCollectionView.reloadData()
+        guard let query = searchController.searchBar.text,
+              !query.trimmingCharacters(in: .whitespaces).isEmpty,
+              query.trimmingCharacters(in: .whitespaces).count > minimumQueryLength else {
+            DispatchQueue.main.async {
+                searchResultVC.viewModel.resetSearchResults()
+                searchResultVC.searchCollectionView.reloadData()
+                searchResultVC.dismissLoadingIndicator()
+            }
             return
         }
         
@@ -146,6 +151,7 @@ extension TopSearchesVC: UISearchResultsUpdating {
             NetworkManager.shared.searchMovies(page: page, query: query, completion: handleSearchResults)
         }
         
+        // Initial search
         NetworkManager.shared.searchMovies(page: 1, query: query, completion: handleSearchResults)
     }
 }

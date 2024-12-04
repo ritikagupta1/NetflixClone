@@ -47,9 +47,54 @@ final class NetworkManager {
         getData(endPoint: endPoint, completion: completion)
     }
     
+    // Add to NetworkManager class
+    private var currentSearchTask: URLSessionTask?
+
     func searchMovies(page: Int, query: String, completion: @escaping (Result<ContentInfo, NetflixError>) -> Void) {
+        // Cancel previous search task
+        currentSearchTask?.cancel()
+        
         let endPoint = TMDBEndPoint.searchMovies(page: page, query: query)
-        getData(endPoint: endPoint, completion: completion)
+        
+        guard let url = endPoint.url else {
+            completion(.failure(.unableToCompleteRequest))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            // Check if task was cancelled
+            if let error = error as NSError?, error.code == NSURLErrorCancelled {
+                return
+            }
+            
+            // Existing implementation remains the same
+            if error != nil {
+                completion(.failure(.unableToCompleteRequest))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(.invalidData))
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let result = try decoder.decode(ContentInfo.self, from: data)
+                completion(.success(result))
+            } catch {
+                completion(.failure(.invalidData))
+            }
+        }
+        
+        // Store and resume the task
+        currentSearchTask = task
+        task.resume()
     }
     
     func getMovieTrailer(query: String, completion: @escaping (Result<TrailerResponse, NetflixError>) -> Void) {
