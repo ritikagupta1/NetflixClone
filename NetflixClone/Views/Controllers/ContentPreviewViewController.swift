@@ -73,6 +73,8 @@ class ContentPreviewViewController: NetflixDataLoadingVC {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.hidesBackButton = false // Ensure back button is not hidden
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         webView.stopLoading()
     }
     

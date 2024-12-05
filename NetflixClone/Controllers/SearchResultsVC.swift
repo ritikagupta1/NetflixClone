@@ -12,6 +12,7 @@ class SearchResultsVC: NetflixDataLoadingVC {
     
     var searchCollectionView: UICollectionView!
     var getMoreResults: ((Int) -> Void)?
+    var didSelectContent: ((Content) -> Void)?
     
     init(viewModel: SearchResultsViewModel) {
         self.viewModel = viewModel
@@ -67,6 +68,12 @@ extension SearchResultsVC: UICollectionViewDelegate, UICollectionViewDataSource 
         cell.configure(with: viewModel.getPosterPath(for: indexPath.row))
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.searchCollectionView.deselectItem(at: indexPath, animated: true)
+        let content = self.viewModel.searchResults[indexPath.row]
+        self.didSelectContent?(content)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

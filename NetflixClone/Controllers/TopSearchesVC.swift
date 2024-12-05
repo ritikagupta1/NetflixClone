@@ -78,6 +78,13 @@ class TopSearchesVC: NetflixDataLoadingVC {
             }
         }
     }
+    
+    func showContentPreview(for content: Content) {
+        let model = ContentPreviewModel(contentTitle: content.originalTitle ?? content.originalName ?? "Unknown", contentOverView: content.overview ?? "Unknown")
+        let contentPreviewVC = ContentPreviewViewController()
+        contentPreviewVC.configure(with: model)
+        self.navigationController?.pushViewController(contentPreviewVC, animated: true)
+    }
 }
 
 extension TopSearchesVC: UITableViewDelegate, UITableViewDataSource {
@@ -91,6 +98,12 @@ extension TopSearchesVC: UITableViewDelegate, UITableViewDataSource {
         }
         cell.configureCell(with: viewModel.getContent(for: indexPath.row))
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.discoverTableView.deselectRow(at: indexPath, animated: true)
+        let content = self.viewModel.topSearchMovies[indexPath.row]
+        showContentPreview(for: content)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -149,6 +162,10 @@ extension TopSearchesVC: UISearchResultsUpdating {
         
         searchResultVC.getMoreResults = { page in
             NetworkManager.shared.searchMovies(page: page, query: query, completion: handleSearchResults)
+        }
+        
+        searchResultVC.didSelectContent = { content in
+            self.showContentPreview(for: content)
         }
         
         // Initial search

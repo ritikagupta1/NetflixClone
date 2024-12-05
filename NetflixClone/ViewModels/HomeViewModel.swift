@@ -122,6 +122,10 @@ class HomeViewModel {
             }
         }
     }
+    
+    func getHeader() -> String? {
+        contentList[Sections.trendingMovies]?.randomElement()?.posterPath
+    }
 }
 
 enum State {

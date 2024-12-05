@@ -39,6 +39,7 @@ class ComingSoonVC: NetflixDataLoadingVC {
         self.title = Constants.upcomingScreenTitle
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationItem.largeTitleDisplayMode = .always
+        self.navigationController?.navigationBar.tintColor = .white
     }
     
     private func configureTableView() {
@@ -84,6 +85,15 @@ extension ComingSoonVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return rowHeight
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.upcomingTableView.deselectRow(at: indexPath, animated: true)
+        let content = self.viewModel.upcomingMovies[indexPath.row]
+        let model = ContentPreviewModel(contentTitle: content.originalTitle ?? content.originalName ?? "Unknown", contentOverView: content.overview ?? "Unknown")
+        let contentPreviewVC = ContentPreviewViewController()
+        contentPreviewVC.configure(with: model)
+        self.navigationController?.pushViewController(contentPreviewVC, animated: true)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -64,9 +64,6 @@ class HeaderView: UIView {
         self.addSubview(playButton)
         self.addSubview(downloadButton)
         
-        
-        imageView.image = .headerimg
-        
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -83,5 +80,14 @@ class HeaderView: UIView {
             downloadButton.heightAnchor.constraint(equalToConstant: 40),
             downloadButton.widthAnchor.constraint(equalToConstant: 120),
         ])
+    }
+    
+    func set(posterURL: String?) {
+        guard let posterURL = posterURL else {
+            imageView.image = .headerimg
+            return
+        }
+        let url = "https://image.tmdb.org/t/p/w500/\(posterURL)"
+        imageView.sd_setImage(with: URL(string: url))
     }
 }

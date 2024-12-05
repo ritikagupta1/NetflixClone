@@ -31,6 +31,8 @@ class HomeVC: NetflixDataLoadingVC {
         return tableView
     }()
     
+    private var headerView: HeaderView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
@@ -71,7 +73,8 @@ class HomeVC: NetflixDataLoadingVC {
         
         homeFeedTableView.dataSource = self
         homeFeedTableView.delegate = self
-        homeFeedTableView.tableHeaderView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: headerHeight))
+        self.headerView = HeaderView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: headerHeight))
+        homeFeedTableView.tableHeaderView = headerView
     }
     
     override func viewDidLayoutSubviews() {
@@ -182,6 +185,7 @@ extension HomeVC: HomeViewModelDelegate {
             self.dismissLoadingIndicator()
             self.homeFeedTableView.isHidden = false
             self.homeFeedTableView.reloadData()
+            self.headerView?.set(posterURL: self.viewModel.getHeader())
             self.view.bringSubviewToFront(self.homeFeedTableView)
             
         case .empty:
