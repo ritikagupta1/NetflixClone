@@ -171,6 +171,11 @@ class HomeTableViewCell: UITableViewCell {
     @objc private func retryButtonTapped() {
         retryHandler?()
     }
+    
+    func downloadMovie(at indexPath: IndexPath) {
+        let content = self.content[indexPath.row]
+        print("Downloading \(content.originalTitle ?? "N/A")")
+    }
 }
 
 extension HomeTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -195,5 +200,16 @@ extension HomeTableViewCell: UICollectionViewDelegate, UICollectionViewDataSourc
         if scrollView.contentSize.width - scrollView.contentOffset.x < scrollView.frame.width {
             self.fetchNext?()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            
+            let downloadAction = UIAction(title: "Download", state: .off) { _ in
+                self.downloadMovie(at: indexPath)
+            }
+            return UIMenu(options: .displayInline, children: [downloadAction])
+        }
+        return config
     }
 }
