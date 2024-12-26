@@ -1,6 +1,9 @@
 # Netflix Clone iOS App
 An iOS application replicating Netflix's core functionality using modern development practices and MVVM architecture.
 
+<img width="1030" alt="Screenshot 2024-12-26 at 8 38 40 PM" src="https://github.com/user-attachments/assets/9b517068-9275-4f4e-8954-0e4d377fdc6b" />
+
+
 ## Features
 - Browse multiple categories:
   - Trending movies and TV shows
