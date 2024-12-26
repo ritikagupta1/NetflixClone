@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B41EF1D12D1D3F3700046945 /* DownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41EF1D02D1D3F2B00046945 /* DownloadViewModel.swift */; };
+		B41EF1D52D1D401100046945 /* DownloadedContent.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B41EF1D32D1D401100046945 /* DownloadedContent.xcdatamodeld */; };
+		B41EF1EB2D1D418500046945 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41EF1EA2D1D417C00046945 /* CoreDataManager.swift */; };
+		B41EF1EE2D1D9DAF00046945 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B41EF1ED2D1D9DAF00046945 /* SDWebImage */; };
+		B41EF1F02D1D9DAF00046945 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B41EF1EF2D1D9DAF00046945 /* SDWebImageMapKit */; };
 		B48B247D2CEA52D300EB9921 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48B247C2CEA52D300EB9921 /* Content.swift */; };
 		B48B247F2CEB25F600EB9921 /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48B247E2CEB25F600EB9921 /* TitleCollectionViewCell.swift */; };
 		B48B24862CEC48DC00EB9921 /* NetflixDataLoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48B24852CEC48DC00EB9921 /* NetflixDataLoadingVC.swift */; };
 		B48B24882CEC6E2200EB9921 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48B24872CEC6E2200EB9921 /* EmptyStateView.swift */; };
 		B48B248A2CEC792A00EB9921 /* Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48B24892CEC792A00EB9921 /* Sections.swift */; };
-		B48F21342CFC6E550017CC53 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B48F21332CFC6E550017CC53 /* SDWebImage */; };
-		B48F21362CFC6E550017CC53 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B48F21352CFC6E550017CC53 /* SDWebImageMapKit */; };
 		B4965D342CF59BDE0025BAAF /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4965D332CF59BDE0025BAAF /* TitleTableViewCell.swift */; };
 		B4965D362CF5C0940025BAAF /* SearchResultsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4965D352CF5C0940025BAAF /* SearchResultsVC.swift */; };
 		B4965D382CF725630025BAAF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4965D372CF725630025BAAF /* Constants.swift */; };
@@ -43,6 +46,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B41EF1D02D1D3F2B00046945 /* DownloadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadViewModel.swift; sourceTree = "<group>"; };
+		B41EF1D42D1D401100046945 /* DownloadedContent.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DownloadedContent.xcdatamodel; sourceTree = "<group>"; };
+		B41EF1EA2D1D417C00046945 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		B48B247C2CEA52D300EB9921 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		B48B247E2CEB25F600EB9921 /* TitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCollectionViewCell.swift; sourceTree = "<group>"; };
 		B48B24852CEC48DC00EB9921 /* NetflixDataLoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetflixDataLoadingVC.swift; sourceTree = "<group>"; };
@@ -84,8 +90,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B48F21362CFC6E550017CC53 /* SDWebImageMapKit in Frameworks */,
-				B48F21342CFC6E550017CC53 /* SDWebImage in Frameworks */,
+				B41EF1F02D1D9DAF00046945 /* SDWebImageMapKit in Frameworks */,
+				B41EF1EE2D1D9DAF00046945 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +147,7 @@
 				B4FFEA9A2CC231A600EE22F5 /* LaunchScreen.storyboard */,
 				B4F21D5C2CCAC83200BC60D0 /* Configurations.xcconfig */,
 				B4FFEA9D2CC231A600EE22F5 /* Info.plist */,
+				B41EF1D32D1D401100046945 /* DownloadedContent.xcdatamodeld */,
 			);
 			path = NetflixClone;
 			sourceTree = "<group>";
@@ -190,6 +197,7 @@
 				B4965D452CF7942D0025BAAF /* ComingSoonViewModel.swift */,
 				B4965D472CF844A60025BAAF /* TopSearchViewModel.swift */,
 				B4965D492CF84C860025BAAF /* SearchResultsViewModel.swift */,
+				B41EF1D02D1D3F2B00046945 /* DownloadViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -197,6 +205,7 @@
 		B4FFEAAF2CC23E9200EE22F5 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				B41EF1EA2D1D417C00046945 /* CoreDataManager.swift */,
 				B4FAAD192CCC2EB300355FFB /* NetworkManager.swift */,
 				B4FAAD1B2CCC2EBE00355FFB /* TMDBEndPoint.swift */,
 				B4965D4B2CFA0F6C0025BAAF /* YouTubeEndPoint.swift */,
@@ -229,8 +238,8 @@
 			);
 			name = NetflixClone;
 			packageProductDependencies = (
-				B48F21332CFC6E550017CC53 /* SDWebImage */,
-				B48F21352CFC6E550017CC53 /* SDWebImageMapKit */,
+				B41EF1ED2D1D9DAF00046945 /* SDWebImage */,
+				B41EF1EF2D1D9DAF00046945 /* SDWebImageMapKit */,
 			);
 			productName = NetflixClone;
 			productReference = B4FFEA8C2CC231A300EE22F5 /* NetflixClone.app */;
@@ -242,9 +251,9 @@
 		B4FFEA842CC231A300EE22F5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = NO;
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					B4FFEA8B2CC231A300EE22F5 = {
 						CreatedOnToolsVersion = 15.4;
@@ -261,7 +270,7 @@
 			);
 			mainGroup = B4FFEA832CC231A300EE22F5;
 			packageReferences = (
-				B48F21322CFC6E550017CC53 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				B41EF1EC2D1D9DAF00046945 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = B4FFEA8D2CC231A300EE22F5 /* Products */;
 			projectDirPath = "";
@@ -296,11 +305,14 @@
 				B48B248A2CEC792A00EB9921 /* Sections.swift in Sources */,
 				B4965D512CFB256E0025BAAF /* ContentPreviewViewController.swift in Sources */,
 				B4965D422CF73A410025BAAF /* ContentFetcher.swift in Sources */,
+				B41EF1D52D1D401100046945 /* DownloadedContent.xcdatamodeld in Sources */,
 				B4965D362CF5C0940025BAAF /* SearchResultsVC.swift in Sources */,
+				B41EF1D12D1D3F3700046945 /* DownloadViewModel.swift in Sources */,
 				B48B247F2CEB25F600EB9921 /* TitleCollectionViewCell.swift in Sources */,
 				B4965D4C2CFA0F6C0025BAAF /* YouTubeEndPoint.swift in Sources */,
 				B4965D482CF844A60025BAAF /* TopSearchViewModel.swift in Sources */,
 				B4FFEAB42CC26C7500EE22F5 /* HeaderView.swift in Sources */,
+				B41EF1EB2D1D418500046945 /* CoreDataManager.swift in Sources */,
 				B48B247D2CEA52D300EB9921 /* Content.swift in Sources */,
 				B4965D462CF7942D0025BAAF /* ComingSoonViewModel.swift in Sources */,
 				B4FAAD1A2CCC2EB300355FFB /* NetworkManager.swift in Sources */,
@@ -471,7 +483,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -501,7 +513,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -540,7 +552,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B48F21322CFC6E550017CC53 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+		B41EF1EC2D1D9DAF00046945 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
 			requirement = {
@@ -551,17 +563,30 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B48F21332CFC6E550017CC53 /* SDWebImage */ = {
+		B41EF1ED2D1D9DAF00046945 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B48F21322CFC6E550017CC53 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			package = B41EF1EC2D1D9DAF00046945 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
 		};
-		B48F21352CFC6E550017CC53 /* SDWebImageMapKit */ = {
+		B41EF1EF2D1D9DAF00046945 /* SDWebImageMapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B48F21322CFC6E550017CC53 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			package = B41EF1EC2D1D9DAF00046945 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		B41EF1D32D1D401100046945 /* DownloadedContent.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B41EF1D42D1D401100046945 /* DownloadedContent.xcdatamodel */,
+			);
+			currentVersion = B41EF1D42D1D401100046945 /* DownloadedContent.xcdatamodel */;
+			path = DownloadedContent.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B4FFEA842CC231A300EE22F5 /* Project object */;
 }

@@ -48,3 +48,18 @@ struct PaginationInfo {
         currentPage < totalPages
     }
 }
+
+// MARK: COREADATA ENTITY CONVERSION
+extension Content {
+    init(from downloadedContent: DownloadedContent) {
+        self.id = Int(downloadedContent.id)
+        self.originalName = downloadedContent.originalName
+        self.originalTitle = downloadedContent.originalTitle
+        self.posterPath = downloadedContent.posterPath
+        self.overview = downloadedContent.overview
+        self.voteCount = Int(downloadedContent.voteCount)
+        self.voteAverage = downloadedContent.voteAverage
+        self.mediaType = downloadedContent.mediaType
+        self.releaseDate = downloadedContent.releaseDate
+    }
+}

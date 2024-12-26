@@ -7,112 +7,128 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9FE1E5D6-6067-45AB-A54F-0C6F942ECB64"
-            shouldBeEnabled = "Yes"
+            uuid = "5307AE14-08D5-4458-A4FA-3B805C7A84F8"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NetflixClone/Controllers/TopSearchesVC.swift"
+            filePath = "NetflixClone/Controllers/DownloadsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "handleSearchResults(result:)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D867D96B-C917-4B19-B76E-BB5673DFE9A6"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NetflixClone/ViewModels/SearchResultsViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "updateResults(with:)"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "viewDidAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A28708C2-B5AB-4718-9D02-FBFB9302CC59"
-            shouldBeEnabled = "Yes"
+            uuid = "95FE5DB9-579E-4C47-BFF8-A045A8395F92"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NetflixClone/ViewModels/SearchResultsViewModel.swift"
+            filePath = "NetflixClone/ViewModels/DownloadViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "updateResults(with:)"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "getNumberOfRows()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FAD90996-9CAA-47DA-8006-59F1BD2133A2"
+            uuid = "A7435A0C-8C94-47B3-97AB-1E36FD40D795"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NetflixClone/ViewModels/SearchResultsViewModel.swift"
+            filePath = "NetflixClone/Controllers/DownloadsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "updateResults(with:)"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "getDownloadedMovies()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EE636E0B-29E3-464B-8935-7D5327D7CE97"
+            uuid = "4796F884-93F1-4019-BCDB-579953081044"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NetflixClone/Views/HeaderView.swift"
+            filePath = "NetflixClone/Controllers/DownloadsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
-            landmarkName = "set(posterURL:)"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "getDownloadedMovies()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3784EE16-2FAB-4841-A7B8-028BB8F8C344"
-            shouldBeEnabled = "Yes"
+            uuid = "E10D94E7-9460-4CFF-AF31-BC72A560FF43"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NetflixClone/Controllers/HomeVC.swift"
+            filePath = "NetflixClone/ViewModels/DownloadViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
-            landmarkName = "updateUI(with:)"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "getDownloadedMovies(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C141A56B-1FD6-4DEA-B03B-221E50FAA18D"
+            uuid = "5C60DA1D-B5D1-4811-A3AD-C1A54B817D0A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Views/NetflixDataLoadingVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "showLoadingView()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3CFB019F-5286-4C62-A4F2-B330B15CE999"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NetflixClone/Controllers/SearchResultsVC.swift"
+            filePath = "NetflixClone/Views/NetflixDataLoadingVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "showLoadingView()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "02379204-4E90-4768-BA9F-DF961B698A8D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NetflixClone/Views/NetflixDataLoadingVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "dismissLoadingIndicator()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

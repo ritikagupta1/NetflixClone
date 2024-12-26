@@ -174,7 +174,14 @@ class HomeTableViewCell: UITableViewCell {
     
     func downloadMovie(at indexPath: IndexPath) {
         let content = self.content[indexPath.row]
-        print("Downloading \(content.originalTitle ?? "N/A")")
+        CoreDataManager.shared.addDownloadedContent(content: content) { result in
+            switch result {
+            case .success:
+                print("success Downloading \(content.originalTitle ?? "N/A")")
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 

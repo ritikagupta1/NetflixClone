@@ -25,7 +25,7 @@ class MainTabBarViewController: UITabBarController {
         let topSearchesVC = UINavigationController(rootViewController: TopSearchesVC(viewModel: TopSearchViewModel()))
         topSearchesVC.tabBarItem = UITabBarItem(title: "Top Searches", image: UIImage(systemName: "magnifyingglass"), tag: 2)
         
-        let downloadsVC = UINavigationController(rootViewController: DownloadsVC())
+        let downloadsVC = UINavigationController(rootViewController: DownloadsVC(viewModel: DownloadViewModel()))
         downloadsVC.tabBarItem = UITabBarItem(title: "Downloads", image: UIImage(systemName: "arrow.down.to.line"), tag: 2)
         
         self.viewControllers = [homeVC, comingSoonVC, topSearchesVC, downloadsVC]
