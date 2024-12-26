@@ -62,6 +62,10 @@ class ContentPreviewViewController: NetflixDataLoadingVC {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func downloadTapped() {
+        print("download")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -85,6 +89,7 @@ class ContentPreviewViewController: NetflixDataLoadingVC {
         contentView.addSubview(titleLabel)
         contentView.addSubview(overViewLabel)
         contentView.addSubview(downloadButton)
+        downloadButton.addTarget(self, action: #selector(downloadTapped), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -115,7 +120,8 @@ class ContentPreviewViewController: NetflixDataLoadingVC {
             downloadButton.topAnchor.constraint(equalTo: overViewLabel.bottomAnchor, constant: 20),
             downloadButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             downloadButton.heightAnchor.constraint(equalToConstant: 50),
-            downloadButton.widthAnchor.constraint(equalToConstant: 140)
+            downloadButton.widthAnchor.constraint(equalToConstant: 140),
+            contentView.bottomAnchor.constraint(equalTo: downloadButton.bottomAnchor, constant: 20)
         ])
     }
     
